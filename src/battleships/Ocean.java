@@ -120,9 +120,7 @@ public class Ocean implements IOcean {
 		{
 			//randomly place horizontally or vertically
 			battleship.setHorizontal(random.nextBoolean());
-			
-			battleship.setHorizontal(true);
-			
+						
 			//get a random start row and column
 			int startRow = random.nextInt(ships.length);
 			int startCol = random.nextInt(ships[0].length);
@@ -135,22 +133,36 @@ public class Ocean implements IOcean {
 				if(right && startCol + battleship.getLength() > ships[0].length){right = false;}//go left if no room right
 				if(!right && startCol - battleship.getLength() < 0){right = true;}//go right if no room left
 				
-				//check if there is room
+				//if there is room then place the ship
 				if(roomHorizontally(startRow, startCol, battleship.getLength(), right)){
-					System.out.println("yes");
+					
+					//update the ship object
+					battleship.setBowRow(startRow);
+					battleship.setBowColumn(startCol);
+					
+					//update the ocean
+					
+					System.out.println("yes horizontal");
 					shipPlaced = true;
 				}
 				else{
 					System.out.println("no");
-				}
-					
+				}				
 			}
-			else {
+			else { //vertically
 				boolean up = random.nextBoolean(); 
 				if(up && startRow - battleship.getLength() < 0){up = false;} //go down if no room to go up
 				if(!up && startRow + battleship.getLength() > ships.length){up = true;} //go up if no room down
-			}
-		
+				
+				//check if there is room
+				if(roomVertically(startRow, startCol, battleship.getLength(), up)){
+					System.out.println("yes vertical");
+					shipPlaced = true;
+				}
+				else{
+					System.out.println("no");
+				}	
+			}	
 		
 		}while(!shipPlaced);
 			
@@ -158,6 +170,18 @@ public class Ocean implements IOcean {
 		
 	}//placeAllShipsRandomly()
 	
+	
+	/**
+	 * Sets cells in the ocean as taken with the ship
+	 * @param startRow
+	 * @param startCol
+	 * @param horizontal
+	 * @param length
+	 */
+	private void assignOcean(int startRow, int startCol, boolean horizontal, int length){
+		
+	}
+
 	/**
 	 * Checks whether a ship can be placed horizontally given a start row, start column, ship length and direction of travel
 	 * @param startRow
@@ -172,10 +196,7 @@ public class Ocean implements IOcean {
 			
 			for(int i = startCol; i < startCol + length + 1; i++){
 				
-				if(isOccupied(startRow, i)){
-					return false;
-				}
-				
+				if(isOccupied(startRow, i)){return false;}			
 			}
 			
 			return true;
@@ -184,9 +205,7 @@ public class Ocean implements IOcean {
 			
 			for(int i = startCol; i > startCol - length - 1; i--){
 				
-				if(isOccupied(startRow, i)){
-					return false;
-				}
+				if(isOccupied(startRow, i)){return false;}
 			}
 			
 			return true;
@@ -195,6 +214,34 @@ public class Ocean implements IOcean {
 		
 	}//roomHorizontally()
 	
+	/**
+	 * Checks whether a ship can be placed vertically given a start row, start column, ship length and direction of travel
+	 * @param startRow
+	 * @param startCol
+	 * @param length
+	 * @param moveUp
+	 * @return
+	 */
+	private boolean roomVertically(int startRow, int startCol, int length, boolean moveUp){
+		
+		if(moveUp){
+			
+			for(int i = startRow; i > startRow - length - 1; i--){				
+				if(isOccupied(i, startCol)){return false;}
+			}
+			
+			return true;			
+		}
+		else { //moving left
+			
+			for(int i = startRow; i < startRow + length + 1; i++){
+				if(isOccupied(i, startCol)){return false;}
+			}
+			
+			return true;
+		} //if(moveUp)
+		
+	}//roomVertically
 	
 
 	/**
