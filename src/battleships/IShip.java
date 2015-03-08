@@ -37,7 +37,7 @@ public interface IShip {
 	 * @return
 	 */
 	public abstract boolean okToPlaceShipAt(int row, int column,
-			boolean horizontal, Ocean ocean);
+			boolean horizontal, IOcean ocean);
 
 	/**
 	 * Puts the ship in the ocean. This involves giving values to the bowRow, bowColumn, and
@@ -49,7 +49,7 @@ public interface IShip {
 	 * @param ocean
 	 */
 	public abstract void placeShipAt(int row, int column, boolean horizontal,
-			Ocean ocean);
+			IOcean ocean);
 
 	/**
 	 *  If a part of the ship occupies the given row

@@ -79,7 +79,7 @@ public class Ship implements IShip {
 	 * @see battleships.Ship#okToPlaceShipAt(int, int, boolean, battleships.Ocean)
 	 */
 	@Override
-	public boolean okToPlaceShipAt(int row, int column, boolean horizontal, Ocean ocean) {
+	public boolean okToPlaceShipAt(int row, int column, boolean horizontal, IOcean ocean) {
 		return true;
 	}
 	
@@ -87,7 +87,7 @@ public class Ship implements IShip {
 	 * @see battleships.Ship#placeShipAt(int, int, boolean, battleships.Ocean)
 	 */
 	@Override
-	public void placeShipAt(int row, int column, boolean horizontal, Ocean ocean) {
+	public void placeShipAt(int row, int column, boolean horizontal, IOcean ocean) {
 		
 	}
 	
