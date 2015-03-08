@@ -1,69 +1,111 @@
+/**
+ * 
+ */
 package battleships;
 
-public interface Ship {
 
-	public abstract int getBowRow();
+/**
+ * @author Jbliss02
+ * 
+ * Superclass which defines the common attributes and methods for a ship
+ *
+ */
+public class Ship implements IShip {
 
-	public abstract void setBowRow(int bowRow);
-
-	public abstract int getBowColumn();
-
-	public abstract void setBowColumn(int bowColumn);
-
-	public abstract boolean isHorizontal();
-
-	public abstract void setHorizontal(boolean horizontal);
-
-	public abstract int getLength();
-
-	/**
-	 * Returns the type of this ship. This method exists only to be overridden
-	 * 
-	 * @return 
+	/* (non-Javadoc)
+	 * @see battleships.Ship#getBowRow()
 	 */
-	public abstract String getShipType();
-
-	/**
-	 * Returns true if it is okay to put a ship of this length with its bow in this location,
-	 * with the given orientation, and returns false otherwise. The ship must not overlap
-	 * another ship, or touch another ship (vertically, horizontally, or diagonally), and it
-	 * must not stick out beyond the array. Does not actually change either the ship or
-	 * the Ocean, just says whether it is legal to do so
-	 * @param row
-	 * @param column
-	 * @param horizontal
-	 * @param ocean
-	 * @return
+	@Override
+	public int getBowRow() {
+		return bowRow;
+	}
+	/* (non-Javadoc)
+	 * @see battleships.Ship#setBowRow(int)
 	 */
-	public abstract boolean okToPlaceShipAt(int row, int column,
-			boolean horizontal, Ocean ocean);
-
-	/**
-	 * Puts the ship in the ocean. This involves giving values to the bowRow, bowColumn, and
-	 * horizontal instance variables in the ship, and it also involves putting a reference
-	 * to the ship in each of 1 or more locations (up to 4) in the ships array in the Ocean object.
-	 * @param row
-	 * @param column
-	 * @param horizontal
-	 * @param ocean
+	@Override
+	public void setBowRow(int bowRow) {
+		this.bowRow = bowRow;
+	}
+	/* (non-Javadoc)
+	 * @see battleships.Ship#getBowColumn()
 	 */
-	public abstract void placeShipAt(int row, int column, boolean horizontal,
-			Ocean ocean);
-
-	/**
-	 *  If a part of the ship occupies the given row
-	 *  and column, and the ship hasn’t been sunk, mark that part of the ship as hit (in
-	 * the hit array, 0 indicates the bow) and return true, otherwise return false.
-	 * @param row
-	 * @param column
-	 * @return
+	@Override
+	public int getBowColumn() {
+		return bowColumn;
+	}
+	/* (non-Javadoc)
+	 * @see battleships.Ship#setBowColumn(int)
 	 */
-	public abstract boolean shootAt(int row, int column);
-
-	/**
-	 * Return true if every part of the ship has been hit, false otherwise
-	 * @return
+	@Override
+	public void setBowColumn(int bowColumn) {
+		this.bowColumn = bowColumn;
+	}
+	/* (non-Javadoc)
+	 * @see battleships.Ship#isHorizontal()
 	 */
-	public abstract boolean isSunk();
-
+	@Override
+	public boolean isHorizontal() {
+		return horizontal;
+	}
+	/* (non-Javadoc)
+	 * @see battleships.Ship#setHorizontal(boolean)
+	 */
+	@Override
+	public void setHorizontal(boolean horizontal) {
+		this.horizontal = horizontal;
+	}
+	/* (non-Javadoc)
+	 * @see battleships.Ship#getLength()
+	 */
+	@Override
+	public int getLength() {
+		return length;
+	}
+	public int bowRow; //the row (0 to 9) which contains the bow (front) of the ship
+	public int bowColumn; //the column (0 to 9) which contains the bow (front) of the ship
+	public int length; //the number of squares occupied by the ship
+	public boolean horizontal; //true if the ship occupies a single row, false otherwise
+	public boolean [] hit = new boolean[4]; // an array of booleans telling whether that part of the ship has been hit
+	
+	/* (non-Javadoc)
+	 * @see battleships.Ship#getShipType()
+	 */
+	@Override
+	public String getShipType(){
+		return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see battleships.Ship#okToPlaceShipAt(int, int, boolean, battleships.Ocean)
+	 */
+	@Override
+	public boolean okToPlaceShipAt(int row, int column, boolean horizontal, Ocean ocean) {
+		return true;
+	}
+	
+	/* (non-Javadoc)
+	 * @see battleships.Ship#placeShipAt(int, int, boolean, battleships.Ocean)
+	 */
+	@Override
+	public void placeShipAt(int row, int column, boolean horizontal, Ocean ocean) {
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see battleships.Ship#shootAt(int, int)
+	 */
+	@Override
+	public boolean shootAt(int row, int column) {
+		return true;
+	}
+	
+	/* (non-Javadoc)
+	 * @see battleships.Ship#isSunk()
+	 */
+	@Override
+	public boolean isSunk(){
+		return true;
+	}
+	
 }
+
