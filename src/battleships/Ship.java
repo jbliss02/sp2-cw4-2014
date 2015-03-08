@@ -61,10 +61,10 @@ public class Ship implements IShip {
 	public int getLength() {
 		return length;
 	}
-	public int bowRow; //the row (0 to 9) which contains the bow (front) of the ship
-	public int bowColumn; //the column (0 to 9) which contains the bow (front) of the ship
-	public int length; //the number of squares occupied by the ship
-	public boolean horizontal; //true if the ship occupies a single row, false otherwise
+	private int bowRow; //the row (0 to 9) which contains the bow (front) of the ship
+	private int bowColumn; //the column (0 to 9) which contains the bow (front) of the ship
+	protected int length; //the number of squares occupied by the ship
+	private boolean horizontal; //true if the ship occupies a single row, false otherwise
 	public boolean [] hit = new boolean[4]; // an array of booleans telling whether that part of the ship has been hit
 	
 	/* (non-Javadoc)

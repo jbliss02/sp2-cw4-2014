@@ -25,14 +25,6 @@ public class Ocean implements IOcean {
 		shipsSunk = 0;
 	}
 	
-	/* (non-Javadoc)
-	 * @see battleships.IOcean#placeAllShipsRandomly()
-	 */
-	@Override
-	public void placeAllShipsRandomly() {
-		
-	}
-	
 	
 	/* (non-Javadoc)
 	 * @see battleships.IOcean#isOccupied(int, int)
@@ -100,5 +92,14 @@ public class Ocean implements IOcean {
 	public void print(){
 		
 	}
+	
+	/* (non-Javadoc)
+	 * @see battleships.IOcean#placeAllShipsRandomly()
+	 */
+	@Override
+	public void placeAllShipsRandomly() {
+		
+	}
+	
 	
 }//Ocean class ends
