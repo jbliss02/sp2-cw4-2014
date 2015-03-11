@@ -13,9 +13,16 @@ import java.util.Random;
 public class Ocean implements IOcean {
 
 	private Ship[][] ships = new Ship[10][10];
+	
+	private IShip[] actualShips = new IShip[10]; //An array of the actual ships in the game
 	private int shotsFired; //The total number of shots fired by the user
 	private int hitCount; //The number of times a shot hit a ship. If the user shoots the same part of a ship more than once, every hit is counted
 	private int shipsSunk; //The number of ships sunk
+	
+	final int NBATTLESHIPS = 1;
+	final int NCRUSIER = 2;
+	final int NDESTROYER = 3;
+	final int NSUBMARINE = 4;
 	
 	/**
 	 * Creates an empty ocean (fills the ships array with EmptySeas)
@@ -26,6 +33,7 @@ public class Ocean implements IOcean {
 		hitCount = 0;
 		shipsSunk = 0;
 		createEmptyOcean();
+		setActualShips();
 	}
 	
 	
@@ -120,7 +128,7 @@ public class Ocean implements IOcean {
 		{
 			//randomly place horizontally or vertically
 			battleship.setHorizontal(random.nextBoolean());
-						
+									
 			//get a random start row and column
 			int startRow = random.nextInt(ships.length);
 			int startCol = random.nextInt(ships[0].length);
@@ -170,17 +178,6 @@ public class Ocean implements IOcean {
 		
 	}//placeAllShipsRandomly()
 	
-	
-	/**
-	 * Sets cells in the ocean as taken with the ship
-	 * @param startRow
-	 * @param startCol
-	 * @param horizontal
-	 * @param length
-	 */
-	private void assignOcean(int startRow, int startCol, boolean horizontal, int length){
-		
-	}
 
 	/**
 	 * Checks whether a ship can be placed horizontally given a start row, start column, ship length and direction of travel
@@ -192,25 +189,18 @@ public class Ocean implements IOcean {
 	 */
 	private boolean roomHorizontally(int startRow, int startCol, int length, boolean moveRight){
 		
-		if(moveRight){
-			
-			for(int i = startCol; i < startCol + length + 1; i++){
-				
-				if(isOccupied(startRow, i)){return false;}			
-			}
-			
-			return true;
+		//set the start and end cells
+		int startCell = moveRight ? startCol : startCol - length + 1;
+		int endCell = moveRight ? startCol + length - 1 : startCol;
+		
+		//iterate through the cells checking if any cannot accommodate a ship
+		for(int i = startCell; i < endCell + 1; i++){
+			if(!canPlace(startRow, i)){
+				return false;
+			}	
 		}
-		else{ //moving left
-			
-			for(int i = startCol; i > startCol - length - 1; i--){
-				
-				if(isOccupied(startRow, i)){return false;}
-			}
-			
-			return true;
-			
-		}//whether we are moving left or right
+		
+		return true; //if we are here all cells validated so we have room
 		
 	}//roomHorizontally()
 	
@@ -224,26 +214,53 @@ public class Ocean implements IOcean {
 	 */
 	private boolean roomVertically(int startRow, int startCol, int length, boolean moveUp){
 		
-		if(moveUp){
-			
-			for(int i = startRow; i > startRow - length - 1; i--){				
-				if(isOccupied(i, startCol)){return false;}
-			}
-			
-			return true;			
-		}
-		else { //moving left
-			
-			for(int i = startRow; i < startRow + length + 1; i++){
-				if(isOccupied(i, startCol)){return false;}
-			}
-			
-			return true;
-		} //if(moveUp)
+		//set the start and end cells
+		int startCell = moveUp ? startRow - length + 1 : startRow;
+		int endCell = moveUp ? startRow : startRow + length - 1;
 		
+		//iterate through the cells checking if any cannot accommodate a ship
+		for(int i = startCell; i < endCell + 1; i++){
+			if(!canPlace(i, startCol)){
+				return false;
+			}	
+		}
+	
+		return true; //if we are here all cells validated so we have room
+					
 	}//roomVertically
 	
 
+	/**
+	 * Checks whether the cell reference passed in is legal to place part of a ship to
+	 * Checks both whether that particular cell is occupied
+	 * And whether any adjacent cell is occupied
+	 * @param row
+	 * @param cell
+	 * @return
+	 */
+	private boolean canPlace(int row, int cell){		
+		return isOccupied(row, cell) || isAdjacentOccupied(row, cell) ? false : true;
+	}
+	
+	/**
+	 * Checks whether cells adjacent to the cells past in are occupied
+	 * Ensures ships are not placed with cells adjacent to each other
+	 * If cell has no adjacent cells then these are not checked
+	 * @param row
+	 * @param col
+	 * @return
+	 */
+	private boolean isAdjacentOccupied(int row, int col){
+		
+		if (row > 0 && isOccupied(row - 1, col)){return true;} //check up
+		if (row < ships.length - 1 && isOccupied(row + 1, col)){return true;} //check down
+		if (col > 0 && isOccupied(row, col - 1)){return true; } //check left
+		if (col < ships[0].length - 1 && isOccupied(row, col + 1)){return true; } //check right
+		
+		return false; //if here no adjacent cells have been occupied
+		
+	}
+	
 	/**
 	 * Populates the array with EmptyOcean objects,
 	 * used at the start of the game to set the ocean to "empty"
@@ -261,6 +278,29 @@ public class Ocean implements IOcean {
 		}//i
 		
 	}//createEmptyOcean()
+	
+	/**
+	 * Fills the actualShips Array with the actual
+	 * ships that will be visible in the game
+	 * uses the class final variables to assign
+	 * the correct number of ships, this allows the
+	 * number to be easily changed
+	 */
+	private void setActualShips(){
+				 
+		actualShips[0] = new Battleship();
+		actualShips[1] = new Cruiser();
+		actualShips[2] = new Cruiser();
+		actualShips[3] = new Destroyer();
+		actualShips[4] = new Destroyer();
+		actualShips[5] = new Destroyer();
+		actualShips[6] = new Submarine();
+		actualShips[7] = new Submarine();
+		actualShips[8] = new Submarine();
+		actualShips[9] = new Submarine();
+		
+	
+	}//setActualShips
 	
 	
 }//Ocean class ends
