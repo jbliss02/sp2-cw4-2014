@@ -12,7 +12,7 @@ public class OceanTest {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	//@Test
 	public void testIsOccupied_allempty(){
 		
 		for(int row = 0; row < 10; row++){
@@ -23,7 +23,7 @@ public class OceanTest {
 
 	}//testIsOccupied_allempty
 
-	@Test
+	//@Test
 	public void placeShipsByRandom(){
 		
 		Ocean ocean = new Ocean();
@@ -34,10 +34,33 @@ public class OceanTest {
 	@Test
 	public void printOcean()
 	{
-		
 		Ocean ocean = new Ocean();
 		ocean.placeAllShipsRandomly();
 		ocean.print();
 	}//printOcean
+
+	//@Test
+	public void shootAtTest(){
+		
+		Ocean ocean = new Ocean();
+		Battleship battleship = new Battleship();
+		
+		ocean.getShipArray()[0][0] = battleship;
+		ocean.getShipArray()[0][1] = battleship;
+		ocean.getShipArray()[0][2] = battleship;
+		ocean.getShipArray()[0][3] = battleship;
+		
+		//row 1 + should fail
+		for(int row = 1; row < 10; row++){
+			for(int col = 0; col < 10; col++){
+				
+				assertTrue(!ocean.shootAt(row, col));
+				
+			}
+		}
+
+		
+	}
+	
 	
 }

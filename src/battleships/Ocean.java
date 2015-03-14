@@ -50,8 +50,18 @@ public class Ocean implements IOcean {
 	 */
 	@Override
 	public boolean shootAt(int row, int column){
-		return false;
-	}
+		
+		shotsFired++; 
+		
+		if(ships[row][column].shootAt(row, column)){
+			hitCount++;
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}//shootAt
 	
 	/* (non-Javadoc)
 	 * @see battleships.IOcean#getShotsFired()
@@ -180,6 +190,8 @@ public class Ocean implements IOcean {
 			
 	}//placeAllShipsRandomly()
 	
+	
+
 	
 	/**
 	 * Populates the array with EmptyOcean objects,

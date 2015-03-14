@@ -81,6 +81,8 @@ public class Ship implements IShip {
 	@Override
 	public boolean okToPlaceShipAt(int row, int column, boolean horizontal, IOcean ocean) {
 		
+		ocean.print();
+		
 		if(horizontal){
 			
 			for(int i = column; i < column + length; i++){
@@ -137,14 +139,14 @@ public class Ship implements IShip {
 		//having a multilined if statement that is more difficult to read and debug
 		
 		if (row > 0 && ocean.isOccupied(row - 1, col)){return true;} //check up
-		if (row < length - 1 && ocean.isOccupied(row + 1, col)){return true;} //check down
+		if (row < ocean.getShipArray().length - 1 && ocean.isOccupied(row + 1, col)){return true;} //check down
 		if (col > 0 && ocean.isOccupied(row, col - 1)){return true;} //check left
-		if (col < length - 1 && ocean.isOccupied(row, col + 1)){return true;} //check right
+		if (col < ocean.getShipArray()[0].length - 1 && ocean.isOccupied(row, col + 1)){return true;} //check right
 			
-		if(row > 0 && col < length - 1 && ocean.isOccupied(row - 1, col + 1)){return true;} //check diagonal top right
+		if(row > 0 && col < ocean.getShipArray()[0].length - 1   && ocean.isOccupied(row - 1, col + 1)){return true;} //check diagonal top right
 		if(row > 0 && col > 0 && ocean.isOccupied(row - 1, col -1)){return true;}  //check diagonal top left		
-		if(row < length - 1 && col < length - 1 && ocean.isOccupied(row + 1, col + 1)){return true;}  //check diagonal bottom right		
-		if(row < length - 1 && col > 0 && ocean.isOccupied(row + 1, col - 1)){return true;}  //check diagonal bottom left
+		if(row <  ocean.getShipArray().length - 1  && col < ocean.getShipArray()[0].length - 1   && ocean.isOccupied(row + 1, col + 1)){return true;}  //check diagonal bottom right		
+		if(row < ocean.getShipArray().length - 1   && col > 0 && ocean.isOccupied(row + 1, col - 1)){return true;}  //check diagonal bottom left
 		
 		return false; //if here no adjacent cells have been occupied
 		
