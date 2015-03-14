@@ -13,8 +13,9 @@ import java.util.Random;
 public class Ocean implements IOcean {
 
 	private Ship[][] ships = new Ship[10][10];
-	
 	private Ship[] actualShips = new Ship[10]; //An array of the actual ships in the game
+	
+	private boolean[][] shotsReceived = new boolean[10][10];
 	private int shotsFired; //The total number of shots fired by the user
 	private int hitCount; //The number of times a shot hit a ship. If the user shoots the same part of a ship more than once, every hit is counted
 	private int shipsSunk; //The number of ships sunk
@@ -37,7 +38,7 @@ public class Ocean implements IOcean {
 	@Override
 	public boolean isOccupied(int row, int column) {
 		
-		if(ships[row][column].getClass().getSimpleName().equals("EmptySea")){ //change this to get ship type???
+		if(ships[row][column].getClass().getSimpleName().equals("EmptySea")){ 
 			return false;
 		}
 		else{
@@ -51,18 +52,22 @@ public class Ocean implements IOcean {
 	@Override
 	public boolean shootAt(int row, int column){
 		
+		//update the flags that are set with each shot
 		shotsFired++; 
+		shotsReceived[row][column] = true;
 		
-		
+		//set a flag so we can determine whether his shot has sunk the ship
 		boolean hasSunk = false;
 		if(ships[row][column].isSunk()){hasSunk = true;}
 		
+		//see if this shot hit a ship
 		if(ships[row][column].shootAt(row, column)){
 			hitCount++;
 			if(!hasSunk && ships[row][column].isSunk()){shipsSunk++;}
 			return true;
 		}
 		else {
+			ships[row][column] = new HitEmptySea(); //mark this bit of the ocean as being hit
 			return false;
 		}
 		
@@ -128,8 +133,18 @@ public class Ocean implements IOcean {
 			
 			for(int col = 0; col < ships[0].length; col++)
 			{
-				System.out.print(ships[row][col].toString());
 				
+				if(shotsReceived[row][col]){
+					System.out.print(ships[row][col].toString());
+				}
+				else{
+					System.out.print(".");
+				}
+
+					
+					
+
+
 			}//col
 			
 			System.out.println();
@@ -137,6 +152,8 @@ public class Ocean implements IOcean {
 		}//row
 		
 	}//print()
+	
+	
 	
 	/* (non-Javadoc)
 	 * @see battleships.IOcean#placeAllShipsRandomly()

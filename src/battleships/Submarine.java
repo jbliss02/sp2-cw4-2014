@@ -19,7 +19,12 @@ public class Submarine extends Ship{
 	
 	@Override
 	public String toString(){
-		return "S";
+		if(super.isSunk()){
+			return "X";
+		}
+		else{
+			return "S";
+		}	
 	}
 	
 

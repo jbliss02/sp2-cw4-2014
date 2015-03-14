@@ -31,7 +31,7 @@ public class OceanTest {
 		
 	}//placeShipsByRandom
 	
-	@Test
+	//@Test
 	public void printOcean()
 	{
 		Ocean ocean = new Ocean();
@@ -83,6 +83,59 @@ public class OceanTest {
 		
 		
 	}//shootAtTest
+	
+	//@Test
+	public void testShotsMissed(){
+		
+		//visual tests
+		
+		Ocean ocean = new Ocean();
+		ocean.print();
+		ocean.shootAt(0,0);
+		ocean.print();
+		ocean.shootAt(5,6);
+		ocean.print();
+				
+	}
+	
+	@Test
+	public void testShotsHitandSunk(){
+		
+		//visual tests	
+		Ocean ocean = new Ocean();
+		Battleship battleship = new Battleship();
+		battleship.setHorizontal(true);
+		ocean.getShipArray()[0][0] = battleship;
+		ocean.getShipArray()[0][1] = battleship;
+		ocean.getShipArray()[0][2] = battleship;
+		ocean.getShipArray()[0][3] = battleship;
+		
+		ocean.print();
+		
+		//try the hits
+		assertEquals("1", 0, ocean.getShipsSunk());
+		assertTrue(ocean.shootAt(0, 0));
+		assertTrue(!battleship.isSunk());
+		ocean.print();
+		assertEquals("1", 0, ocean.getShipsSunk());
+		
+		assertTrue(ocean.shootAt(0, 1));
+		assertTrue(!battleship.isSunk());
+		ocean.print();
+		assertEquals("1", 0, ocean.getShipsSunk());
+		
+		assertTrue(ocean.shootAt(0, 2));
+		assertTrue(!battleship.isSunk());
+		ocean.print();
+		assertEquals("1", 0, ocean.getShipsSunk());
+		
+		assertTrue(ocean.shootAt(0, 3));
+		assertTrue(battleship.isSunk());
+		ocean.print();
+		assertEquals("1", 1, ocean.getShipsSunk());
+		
+	}
+	
 	
 	
 }

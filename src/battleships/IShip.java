@@ -68,7 +68,7 @@ public interface IShip {
 	 */
 	public abstract boolean isSunk();
 
-	
+
 
 
 }
