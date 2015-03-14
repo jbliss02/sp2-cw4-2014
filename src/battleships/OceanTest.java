@@ -149,13 +149,10 @@ public class OceanTest {
 			for(int col = 0; col < 10; col++){
 					
 				ocean.shootAt(row, col);
-				ocean.print();
-
-
 			}
 		}
-		
-
+		ocean.print();
+		assertTrue(ocean.isGameOver());
 		
 	}
 	

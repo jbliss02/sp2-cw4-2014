@@ -162,41 +162,37 @@ public class Ship implements IShip {
 	public boolean shootAt(int row, int column) {
 			
 		if(isSunk()) {return false;} //ship has been sunk so cannot have a successful pop at it
-		
-		int cellCount = 0; //which cell has been hit (to update hits array);
-		
+				
 		if(horizontal){
 			
 			//check each cell the ship is in
 			
 			//get the max column
-			int maxCol = (bowColumn + length) > 9 ? 9 : bowColumn + length;
+			int maxCol = (bowColumn + length - 1) > 9 ? 9 : bowColumn + length;
 			
 			for(int i = bowColumn; i < maxCol; i++){
 				
 				if(i == column && row == bowRow){
-					hit[cellCount] = true; //mark the cell as hit
+					hit[i - bowColumn] = true; //mark the cell as hit
 					return true; //successful hit
 				}
 				
-				cellCount++;
 				
 			}//for each cell			
 		}
 		else { //is vertical
 			
 			//get the max row
-			int maxRow = (bowRow + length) > 9 ? 9 : bowRow + length;
+			int maxRow = (bowRow + length - 1) > 9 ? 9 : bowRow + length;
 			
 			//check each cell the ship is in
 			for(int i = bowRow; i < maxRow; i++){
 				
 				if(i == row && column == bowColumn){
-					hit[cellCount] = true;
+					hit[i - bowRow] = true;
 					return true;
 				}
 				
-				cellCount++;
 				
 			}//for each cell
 			

@@ -67,6 +67,11 @@ public class Ocean implements IOcean {
 			return true;
 		}
 		else {
+			
+			if(!ships[row][column].getClass().getSimpleName().equals("EmptySea")){
+				String s = "break";
+			}
+			
 			ships[row][column] = new HitEmptySea(); //mark this bit of the ocean as being hit
 			return false;
 		}
