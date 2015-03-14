@@ -84,7 +84,7 @@ public class OceanTest {
 		
 	}//shootAtTest
 	
-	//@Test
+	@Test
 	public void testShotsMissed(){
 		
 		//visual tests
@@ -98,7 +98,7 @@ public class OceanTest {
 				
 	}
 	
-	//@Test
+	@Test
 	public void testShotsHitandSunk(){
 		
 		//visual tests	
