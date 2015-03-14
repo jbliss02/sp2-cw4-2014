@@ -130,6 +130,39 @@ public class ShipTest {
 			}
 		}
 				
-	}
+	}//placeShipAt
+	
+	@Test
+	public void shootandsinktest() {
+		
+		Ocean ocean = new Ocean();
+		Battleship battleship = new Battleship();
+		battleship.setHorizontal(true);
+		battleship.placeShipAt(0, 0, true, ocean);
+		
+		//ship should not be sunk
+		assertTrue(!battleship.isSunk());
+		
+		//row 1 lower should all be unsuccessful
+		for(int row = 1; row < 10; row++){
+			for(int col = 0; col < 10; col++){				
+				assertTrue(!battleship.shootAt(row, col));			
+			}	
+		}
+		
+		//ship should not be sunk
+		assertTrue(!battleship.isSunk());
+		
+		//row 0 first 4 should be successful, last 6 should not
+		for(int i = 0; i < 4; i++){			
+			assertTrue(battleship.shootAt(0, i));		
+			if(i < 3){assertTrue(!battleship.isSunk());}
+		}
+		
+		//ship should be sunk
+		assertTrue(battleship.isSunk());
+
+	}//isSunkTest
+	
 
 }

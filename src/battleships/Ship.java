@@ -65,7 +65,7 @@ public class Ship implements IShip {
 	private int bowColumn; //the column (0 to 9) which contains the bow (front) of the ship
 	protected int length; //the number of squares occupied by the ship
 	private boolean horizontal; //true if the ship occupies a single row, false otherwise
-	public boolean [] hit = new boolean[4]; // an array of booleans telling whether that part of the ship has been hit
+	private boolean [] hit = new boolean[4]; // an array of booleans telling whether that part of the ship has been hit
 
 	/* (non-Javadoc)
 	 * @see battleships.Ship#getShipType()
@@ -155,15 +155,51 @@ public class Ship implements IShip {
 	 */
 	@Override
 	public boolean shootAt(int row, int column) {
-		return true;
-	}
+			
+		if(isSunk()) {return false;} //ship has been sunk so cannot have a successful pop at it
+		
+		if(horizontal){
+			
+			//check each cell the ship is in
+			for(int i = bowColumn; i < bowColumn + length; i++){
+				
+				if(i == column && row == bowRow){
+					hit[i] = true; //mark the cell as hit
+					return true; //successful hit
+				}
+				
+			}//for each cell			
+		}
+		else { //is vertical
+			
+			//check each cell the ship is in
+			for(int i = bowRow; i < bowRow + length; i++){
+				
+				if(i == row && column == bowColumn){
+					hit[i] = true;
+					return true;
+				}
+				
+			}//for each cell
+			
+		}//which way the ship is facing
+		
+		return false; //if here no hits have been successful
+		
+	}//shootAt
 	
 	/* (non-Javadoc)
 	 * @see battleships.Ship#isSunk()
 	 */
 	@Override
 	public boolean isSunk(){
-		return true;
+		
+		for(int i = 0; i < length; i++){
+			if(!hit[i]){return false;} //part of ship has not been hit
+		}
+		
+		return true; //if we are here all parts of the ship have been hit
+		
 	}
 	
 }
