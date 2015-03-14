@@ -12,7 +12,7 @@ public class OceanTest {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	//@Test
 	public void testIsOccupied_allempty(){
 		
 		for(int row = 0; row < 10; row++){
@@ -23,10 +23,20 @@ public class OceanTest {
 
 	}//testIsOccupied_allempty
 
-	@Test
+	//@Test
 	public void placeShipsByRandom(){
 		
 		new Ocean().placeAllShipsRandomly();
 		
 	}
+	
+	@Test
+	public void printOcean()
+	{
+		
+		Ocean ocean = new Ocean();
+		ocean.placeAllShipsRandomly();
+		ocean.print();
+	}
+	
 }

@@ -21,6 +21,6 @@ public class Battleship extends Ship{
 	}
 	
 	@Override public String toString() {
-		return "ndkl";
+		return "S";
 	}
 }

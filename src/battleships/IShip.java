@@ -17,6 +17,7 @@ public interface IShip {
 
 	public abstract int getLength();
 
+	
 	/**
 	 * Returns the type of this ship. This method exists only to be overridden
 	 * 
@@ -66,5 +67,8 @@ public interface IShip {
 	 * @return
 	 */
 	public abstract boolean isSunk();
+
+	
+
 
 }

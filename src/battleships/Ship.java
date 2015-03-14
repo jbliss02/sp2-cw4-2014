@@ -66,6 +66,7 @@ public class Ship implements IShip {
 	protected int length; //the number of squares occupied by the ship
 	private boolean horizontal; //true if the ship occupies a single row, false otherwise
 	public boolean [] hit = new boolean[4]; // an array of booleans telling whether that part of the ship has been hit
+
 	
 	/* (non-Javadoc)
 	 * @see battleships.Ship#getShipType()
@@ -74,7 +75,7 @@ public class Ship implements IShip {
 	public String getShipType(){
 		return null;
 	}
-	
+		
 	/* (non-Javadoc)
 	 * @see battleships.Ship#okToPlaceShipAt(int, int, boolean, battleships.Ocean)
 	 */

@@ -14,7 +14,7 @@ public class Ocean implements IOcean {
 
 	private Ship[][] ships = new Ship[10][10];
 	
-	private IShip[] actualShips = new IShip[10]; //An array of the actual ships in the game
+	private Ship[] actualShips = new Ship[10]; //An array of the actual ships in the game
 	private int shotsFired; //The total number of shots fired by the user
 	private int hitCount; //The number of times a shot hit a ship. If the user shoots the same part of a ship more than once, every hit is counted
 	private int shipsSunk; //The number of ships sunk
@@ -43,7 +43,7 @@ public class Ocean implements IOcean {
 	@Override
 	public boolean isOccupied(int row, int column) {
 		
-		if(ships[row][column].getClass().getSimpleName().equals("EmptySea")){
+		if(ships[row][column].getClass().getSimpleName().equals("EmptySea")){ //change this to get ship type???
 			return false;
 		}
 		else{
@@ -109,7 +109,30 @@ public class Ocean implements IOcean {
 	@Override
 	public void print(){
 		
-	}
+		System.out.println();
+		System.out.print(" ");
+		for(int i = 0; i < ships.length; i++){
+			System.out.print(i);
+		}
+		
+		System.out.println();
+		
+		for(int row = 0; row < ships.length; row++){
+			
+			System.out.print(row);
+			
+			for(int col = 0; col < ships[0].length; col++)
+			{
+
+				System.out.print(ships[row][col].toString());
+				
+			}//col
+			
+			System.out.println();
+			
+		}//row
+		
+	}//print()
 	
 	/* (non-Javadoc)
 	 * @see battleships.IOcean#placeAllShipsRandomly()
@@ -119,117 +142,101 @@ public class Ocean implements IOcean {
 		
 		Random random = new Random();
 		
-		//start with one ship
-		IShip battleship = new Battleship();
-		
-		//keep randomly placing the ship until it fits somewhere
-		boolean shipPlaced = false;
-		do
-		{
-			//randomly place horizontally or vertically
-			battleship.setHorizontal(random.nextBoolean());
-									
-			//get a random start row and column
-			int startRow = random.nextInt(ships.length);
-			int startCol = random.nextInt(ships[0].length);
-					
-			//set a direction to go in from the initial row		
-			if(battleship.isHorizontal()){
-				
-				//go left or right
-				boolean right = random.nextBoolean();
-				if(right && startCol + battleship.getLength() > ships[0].length){right = false;}//go left if no room right
-				if(!right && startCol - battleship.getLength() < 0){right = true;}//go right if no room left
-				
-				//if there is room then place the ship
-				if(roomHorizontally(startRow, startCol, battleship.getLength(), right)){
-					
-					//update the ship object
-					battleship.setBowRow(startRow);
-					battleship.setBowColumn(startCol);
-					
-					//update the ocean
-					
-					System.out.println("yes horizontal");
-					shipPlaced = true;
-				}
-				else{
-					System.out.println("no");
-				}				
-			}
-			else { //vertically
-				boolean up = random.nextBoolean(); 
-				if(up && startRow - battleship.getLength() < 0){up = false;} //go down if no room to go up
-				if(!up && startRow + battleship.getLength() > ships.length){up = true;} //go up if no room down
-				
-				//check if there is room
-				if(roomVertically(startRow, startCol, battleship.getLength(), up)){
-					System.out.println("yes vertical");
-					shipPlaced = true;
-				}
-				else{
-					System.out.println("no");
-				}	
-			}	
-		
-		}while(!shipPlaced);
+		for(int shipCount = 0; shipCount < actualShips.length; shipCount++){
 			
-		System.out.print("ship placed");
-		
+			Ship ship = actualShips[shipCount]; //assign a ship for this iteration
+			
+			//keep randomly placing the ship until it fits somewhere
+			boolean shipPlaced = false;
+			do
+			{
+				//randomly place horizontally or vertically
+				ship.setHorizontal(random.nextBoolean());
+										
+				//get a random start row and column
+				int startRow = random.nextInt(ships.length);
+				int startCol = random.nextInt(ships[0].length);
+				
+				int cellsWanted[][] = new int[ship.getLength()][2];
+				
+				//go a random direction 
+				if(ship.isHorizontal()){
+					
+					//go left or right
+					boolean moveRight = random.nextBoolean();
+					if(moveRight && startCol + ship.getLength() > ships[0].length){moveRight = false;}//go left if no room right
+					if(!moveRight && startCol - ship.getLength() < 0){moveRight = true;}//go right if no room left
+					
+					//set the start and end cells
+					int startCell = moveRight ? startCol : startCol - ship.getLength() + 1;
+					
+					//set cells wanted array
+					for(int i = 0; i < ship.getLength(); i++){
+						cellsWanted[i][0] = startRow;
+						cellsWanted[i][1] = startCell + i;
+					}
+					
+				} else {
+					
+					//ship is vertical so go up or down
+					boolean moveUp = random.nextBoolean(); 
+					if(moveUp && startRow - ship.getLength() < 0){moveUp = false;} //go down if no room to go up
+					if(!moveUp && startRow + ship.getLength() > ships.length){moveUp = true;} //go up if no room down
+					
+					//set the start and end cells
+					int startCell = moveUp ? startRow - ship.getLength() + 1 : startRow;
+
+					//set the cells wanted array
+					for(int i = 0; i < ship.getLength(); i++){
+						cellsWanted[i][0] = startCell + i;
+						cellsWanted[i][1] = startCol;
+					}
+					
+				}//if ship is horizontal or vertical
+
+				//try and place this ship in the cells specified
+				shipPlaced = tryPlaceShip(ship, cellsWanted);
+				
+			}while(!shipPlaced);
+						
+		}//for each ship in actualShips (shipCount)
+			
 	}//placeAllShipsRandomly()
 	
 
 	/**
-	 * Checks whether a ship can be placed horizontally given a start row, start column, ship length and direction of travel
-	 * @param startRow
-	 * @param startCol
-	 * @param length
-	 * @param moveRight
+	 * Given a ship and a set of co-ordinates this method will check whether
+	 * the cells are all available, if they are then the cells are
+	 * allocated to this ship
+	 * @param ship
+	 * @param start
 	 * @return
 	 */
-	private boolean roomHorizontally(int startRow, int startCol, int length, boolean moveRight){
-		
-		//set the start and end cells
-		int startCell = moveRight ? startCol : startCol - length + 1;
-		int endCell = moveRight ? startCol + length - 1 : startCol;
-		
-		//iterate through the cells checking if any cannot accommodate a ship
-		for(int i = startCell; i < endCell + 1; i++){
-			if(!canPlace(startRow, i)){
+	private boolean tryPlaceShip(Ship ship, int[][]cellsWanted){
+
+		for(int i = 0; i < cellsWanted.length; i++){
+			
+			if(!canPlace(cellsWanted[i][0], cellsWanted[i][1])){
 				return false;
-			}	
-		}
+			}
+			
+		}//for each cell wanted
 		
-		return true; //if we are here all cells validated so we have room
+		//if here then all cells are available so place this ship
 		
-	}//roomHorizontally()
+		for(int i = 0; i < cellsWanted.length; i++){
+			
+			ships[cellsWanted[i][0]][cellsWanted[i][1]] = ship;
+			
+		}//for each cell wanted
+		
+		return true;
+		
+	}//tryPlaceShip
 	
-	/**
-	 * Checks whether a ship can be placed vertically given a start row, start column, ship length and direction of travel
-	 * @param startRow
-	 * @param startCol
-	 * @param length
-	 * @param moveUp
-	 * @return
-	 */
-	private boolean roomVertically(int startRow, int startCol, int length, boolean moveUp){
-		
-		//set the start and end cells
-		int startCell = moveUp ? startRow - length + 1 : startRow;
-		int endCell = moveUp ? startRow : startRow + length - 1;
-		
-		//iterate through the cells checking if any cannot accommodate a ship
-		for(int i = startCell; i < endCell + 1; i++){
-			if(!canPlace(i, startCol)){
-				return false;
-			}	
-		}
-	
-		return true; //if we are here all cells validated so we have room
-					
-	}//roomVertically
 	
 
+	
 	/**
 	 * Checks whether the cell reference passed in is legal to place part of a ship to
 	 * Checks both whether that particular cell is occupied
@@ -252,10 +259,18 @@ public class Ocean implements IOcean {
 	 */
 	private boolean isAdjacentOccupied(int row, int col){
 		
+		//better to keep each piece of logic discreetly in its own block rather than
+		//having a multilined if statement that is more difficult to read and debug
+		
 		if (row > 0 && isOccupied(row - 1, col)){return true;} //check up
 		if (row < ships.length - 1 && isOccupied(row + 1, col)){return true;} //check down
-		if (col > 0 && isOccupied(row, col - 1)){return true; } //check left
-		if (col < ships[0].length - 1 && isOccupied(row, col + 1)){return true; } //check right
+		if (col > 0 && isOccupied(row, col - 1)){return true;} //check left
+		if (col < ships[0].length - 1 && isOccupied(row, col + 1)){return true;} //check right
+			
+		if(row > 0 && col < ships[0].length - 1 && isOccupied(row - 1, col + 1)){return true;} //check diagonal top right
+		if(row > 0 && col > 0 && isOccupied(row - 1, col -1)){return true;}  //check diagonal top left		
+		if(row < ships.length - 1 && col < ships[0].length - 1 && isOccupied(row + 1, col + 1)){return true;}  //check diagonal bottom right		
+		if(row < ships.length - 1 && col > 0 && isOccupied(row + 1, col - 1)){return true;}  //check diagonal bottom left
 		
 		return false; //if here no adjacent cells have been occupied
 		
