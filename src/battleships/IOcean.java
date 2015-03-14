@@ -15,6 +15,7 @@ public interface IOcean {
 	 */
 	public abstract boolean isOccupied(int row, int column);
 
+	
 	/**
 	 * Returns true if the given location contains
 	 *	a real ship, still afloat, (not an EmptySea), false if it does not. In addition, this

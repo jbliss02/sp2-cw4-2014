@@ -19,11 +19,6 @@ public class Ocean implements IOcean {
 	private int hitCount; //The number of times a shot hit a ship. If the user shoots the same part of a ship more than once, every hit is counted
 	private int shipsSunk; //The number of ships sunk
 	
-	final int NBATTLESHIPS = 1;
-	final int NCRUSIER = 2;
-	final int NDESTROYER = 3;
-	final int NSUBMARINE = 4;
-	
 	/**
 	 * Creates an empty ocean (fills the ships array with EmptySeas)
 	 * initialises any game variables
@@ -35,7 +30,6 @@ public class Ocean implements IOcean {
 		createEmptyOcean();
 		setActualShips();
 	}
-	
 	
 	/* (non-Javadoc)
 	 * @see battleships.IOcean#isOccupied(int, int)
@@ -49,9 +43,7 @@ public class Ocean implements IOcean {
 		else{
 			return true;
 		}
-
-	}
-	
+	}//isOccupied
 	
 	/* (non-Javadoc)
 	 * @see battleships.IOcean#shootAt(int, int)
@@ -84,8 +76,7 @@ public class Ocean implements IOcean {
 	public int getShipsSunk(){
 		return shipsSunk;
 	}
-	
-	
+		
 	/* (non-Javadoc)
 	 * @see battleships.IOcean#isGameOver()
 	 */
@@ -99,10 +90,9 @@ public class Ocean implements IOcean {
 	 */
 	@Override
 	public Ship[][] getShipArray(){
-		return null;
+		return ships;
 	}
 
-	
 	/* (non-Javadoc)
 	 * @see battleships.IOcean#print()
 	 */
@@ -123,7 +113,6 @@ public class Ocean implements IOcean {
 			
 			for(int col = 0; col < ships[0].length; col++)
 			{
-
 				System.out.print(ships[row][col].toString());
 				
 			}//col
@@ -156,9 +145,7 @@ public class Ocean implements IOcean {
 				//get a random start row and column
 				int startRow = random.nextInt(ships.length);
 				int startCol = random.nextInt(ships[0].length);
-				
-				int cellsWanted[][] = new int[ship.getLength()][2];
-				
+								
 				//go a random direction 
 				if(ship.isHorizontal()){
 					
@@ -167,14 +154,8 @@ public class Ocean implements IOcean {
 					if(moveRight && startCol + ship.getLength() > ships[0].length){moveRight = false;}//go left if no room right
 					if(!moveRight && startCol - ship.getLength() < 0){moveRight = true;}//go right if no room left
 					
-					//set the start and end cells
-					int startCell = moveRight ? startCol : startCol - ship.getLength() + 1;
-					
-					//set cells wanted array
-					for(int i = 0; i < ship.getLength(); i++){
-						cellsWanted[i][0] = startRow;
-						cellsWanted[i][1] = startCell + i;
-					}
+					//re-set the starting column so the bow is always the left most column
+					startCol = moveRight ? startCol : startCol - ship.getLength() + 1;
 					
 				} else {
 					
@@ -183,98 +164,22 @@ public class Ocean implements IOcean {
 					if(moveUp && startRow - ship.getLength() < 0){moveUp = false;} //go down if no room to go up
 					if(!moveUp && startRow + ship.getLength() > ships.length){moveUp = true;} //go up if no room down
 					
-					//set the start and end cells
-					int startCell = moveUp ? startRow - ship.getLength() + 1 : startRow;
-
-					//set the cells wanted array
-					for(int i = 0; i < ship.getLength(); i++){
-						cellsWanted[i][0] = startCell + i;
-						cellsWanted[i][1] = startCol;
-					}
-					
+					//re-set the starting row so the bow is always the lowest value row
+					startRow = moveUp ? startRow - ship.getLength() + 1 : startRow;
+				
 				}//if ship is horizontal or vertical
 
-				//try and place this ship in the cells specified
-				shipPlaced = tryPlaceShip(ship, cellsWanted);
-				
+				if(ship.okToPlaceShipAt(startRow, startCol, ship.isHorizontal(), this)){
+					ship.placeShipAt(startRow, startCol, ship.isHorizontal(), this);
+					shipPlaced = true;
+				}
+									
 			}while(!shipPlaced);
 						
 		}//for each ship in actualShips (shipCount)
 			
 	}//placeAllShipsRandomly()
 	
-
-	/**
-	 * Given a ship and a set of co-ordinates this method will check whether
-	 * the cells are all available, if they are then the cells are
-	 * allocated to this ship
-	 * @param ship
-	 * @param start
-	 * @return
-	 */
-	private boolean tryPlaceShip(Ship ship, int[][]cellsWanted){
-
-		for(int i = 0; i < cellsWanted.length; i++){
-			
-			if(!canPlace(cellsWanted[i][0], cellsWanted[i][1])){
-				return false;
-			}
-			
-		}//for each cell wanted
-		
-		//if here then all cells are available so place this ship
-		
-		for(int i = 0; i < cellsWanted.length; i++){
-			
-			ships[cellsWanted[i][0]][cellsWanted[i][1]] = ship;
-			
-		}//for each cell wanted
-		
-		return true;
-		
-	}//tryPlaceShip
-	
-	
-
-	
-	/**
-	 * Checks whether the cell reference passed in is legal to place part of a ship to
-	 * Checks both whether that particular cell is occupied
-	 * And whether any adjacent cell is occupied
-	 * @param row
-	 * @param cell
-	 * @return
-	 */
-	private boolean canPlace(int row, int cell){		
-		return isOccupied(row, cell) || isAdjacentOccupied(row, cell) ? false : true;
-	}
-	
-	/**
-	 * Checks whether cells adjacent to the cells past in are occupied
-	 * Ensures ships are not placed with cells adjacent to each other
-	 * If cell has no adjacent cells then these are not checked
-	 * @param row
-	 * @param col
-	 * @return
-	 */
-	private boolean isAdjacentOccupied(int row, int col){
-		
-		//better to keep each piece of logic discreetly in its own block rather than
-		//having a multilined if statement that is more difficult to read and debug
-		
-		if (row > 0 && isOccupied(row - 1, col)){return true;} //check up
-		if (row < ships.length - 1 && isOccupied(row + 1, col)){return true;} //check down
-		if (col > 0 && isOccupied(row, col - 1)){return true;} //check left
-		if (col < ships[0].length - 1 && isOccupied(row, col + 1)){return true;} //check right
-			
-		if(row > 0 && col < ships[0].length - 1 && isOccupied(row - 1, col + 1)){return true;} //check diagonal top right
-		if(row > 0 && col > 0 && isOccupied(row - 1, col -1)){return true;}  //check diagonal top left		
-		if(row < ships.length - 1 && col < ships[0].length - 1 && isOccupied(row + 1, col + 1)){return true;}  //check diagonal bottom right		
-		if(row < ships.length - 1 && col > 0 && isOccupied(row + 1, col - 1)){return true;}  //check diagonal bottom left
-		
-		return false; //if here no adjacent cells have been occupied
-		
-	}
 	
 	/**
 	 * Populates the array with EmptyOcean objects,
