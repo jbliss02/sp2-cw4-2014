@@ -67,7 +67,6 @@ public class Ship implements IShip {
 	private boolean horizontal; //true if the ship occupies a single row, false otherwise
 	public boolean [] hit = new boolean[4]; // an array of booleans telling whether that part of the ship has been hit
 
-	
 	/* (non-Javadoc)
 	 * @see battleships.Ship#getShipType()
 	 */
@@ -84,17 +83,13 @@ public class Ship implements IShip {
 		
 		if(horizontal){
 			
-			System.out.println("a - " + column + " v " + length);
-			
 			for(int i = column; i < column + length; i++){
 				if(ocean.isOccupied(row, i) || isAdjacentOccupied(row, i, ocean)){ return false;}
 			}
 			
 		}
 		else { //isVertical
-			
-			System.out.println("b - " + row + " v " + length);
-			
+					
 			for(int i = row; i < row + length; i++){
 				if(ocean.isOccupied(i, column) || isAdjacentOccupied(i, column, ocean)){return false;}
 			}

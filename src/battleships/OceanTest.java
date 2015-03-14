@@ -26,9 +26,10 @@ public class OceanTest {
 	@Test
 	public void placeShipsByRandom(){
 		
-		new Ocean().placeAllShipsRandomly();
+		Ocean ocean = new Ocean();
+		ocean.placeAllShipsRandomly();
 		
-	}
+	}//placeShipsByRandom
 	
 	@Test
 	public void printOcean()
@@ -37,6 +38,6 @@ public class OceanTest {
 		Ocean ocean = new Ocean();
 		ocean.placeAllShipsRandomly();
 		ocean.print();
-	}
+	}//printOcean
 	
 }

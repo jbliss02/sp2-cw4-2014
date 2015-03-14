@@ -189,10 +189,8 @@ public class Ocean implements IOcean {
 		
 		for(int i = 0; i < ships.length; i++){
 			
-			for(int n = 0; n < ships[i].length; n++){
-				
-				ships[i][n] = new EmptySea();
-				
+			for(int n = 0; n < ships[i].length; n++){				
+				ships[i][n] = new EmptySea();				
 			}//n
 			
 		}//i

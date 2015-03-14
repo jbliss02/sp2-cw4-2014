@@ -56,7 +56,7 @@ public class ShipTest {
 		
 	}
 	
-	
+	@Test
 	public void gettersSetters(){
 		
 		for(int row = 0; row < 10; row++){
@@ -89,12 +89,47 @@ public class ShipTest {
 			}//col
 		}//row
 		
-		
-		
-
-		
-		
 	}
 	
+	@Test
+	public void okToPlaceShipAt(){
+	
+		Ocean ocean = new Ocean();
+		
+		for(int row = 0; row < ocean.getShipArray().length; row++){			
+			for(int col = 0; col < ocean.getShipArray()[0].length - 4; col++){
+				assertEquals("Empty", true, new Battleship().okToPlaceShipAt(row, col, true, ocean));
+			}			
+		}
+		
+		ocean = new Ocean();
+		ocean.getShipArray()[0][0] = new Submarine();
+		assertEquals("Taken", false, new Battleship().okToPlaceShipAt(0, 0, false, ocean));
+		
+		
+	}//okToPlaceShipAt
+	
+	@Test public void placeShipAt(){
+		
+		Ocean ocean; 
+		Battleship battleship;
+		
+		ocean = new Ocean();
+		battleship = new Battleship();
+		battleship.placeShipAt(0,0,false,ocean);
+		
+		assertEquals("Placed", true, ocean.isOccupied(0, 0));
+		
+		for(int row = 1; row < 10; row++){
+			for(int col = 1; col < 10; col++){
+				
+				battleship = new Battleship();
+				battleship.placeShipAt(0,0,false,ocean);
+				
+				assertEquals("Placed", false, ocean.isOccupied(row, col));
+			}
+		}
+				
+	}
 
 }
