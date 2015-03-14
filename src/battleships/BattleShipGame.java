@@ -18,6 +18,10 @@ import java.util.Scanner;
  * @author J
  *
  */
+/**
+ * @author J
+ *
+ */
 public class BattleShipGame {
 
 	/**
@@ -33,22 +37,52 @@ public class BattleShipGame {
 
 		System.out.print("Welcome to Battleships; the game of highly coupled classes, but the spec has to be followed...\n\n");
 		
-		new BattleShipGame().playGame();
+		 new BattleShipGame().startGame();
+		
+
 		
 	}
 
-	private void playGame(){
+	/**
+	 * Sets up the game and then starts the game
+	 * once the first game has finished continues playing
+	 * the game if the user selects so
+	 */
+	private void startGame(){
 		
 		setupGame();
+		playGame();
 		
-		int row = getRow();
-		int col = getColumn();
-		System.out.println("FIRING TORPEDOS ");
-		
-		ocean.shootAt(row, col);
-		
-		ocean.print();
+		while(playAgain()){
+			playGame();
+		}
+				
+	}//startGame
+	
+	
+	/**
+	 * Runs the game and continues until the game is over
+	 */
+	private void playGame(){
 
+		do{
+			int row = getRow();
+			int col = getColumn();
+			
+			//redraw the screen and show any information required
+			
+			if(ocean.shootAt(row, col)){				
+				System.out.println("Hit");
+			}
+			else{
+				System.out.println("Miss");
+			}
+							
+			ocean.print();
+			
+		}while(!ocean.isGameOver());
+	
+		System.out.println("Game over in " + ocean.getShotsFired() + " shots");
 		
 	}
 	
@@ -70,6 +104,23 @@ public class BattleShipGame {
 		System.out.print("Enter a column to shoot at: ");
 		return getNumberInput();
 	}
+	
+	
+	/**
+	 * Asks the user whether they want to play again
+	 * @return - user choice
+	 */
+	private boolean playAgain(){
+	
+		System.out.println("Press Y to play again or any other key to exit");
+	
+		if(sc.next().toLowerCase().equals("y")){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}//playAgain
 	
 	
 	/**
@@ -107,8 +158,8 @@ public class BattleShipGame {
 	
 	
 	/**
-	 * Initialises ocean and prints it
-	 * And intialises scanner
+	 * Initialises ocean and prints it (so prints a ocean with no shots received)
+	 * And initialises scanner
 	 */
 	private void setupGame(){
 		
