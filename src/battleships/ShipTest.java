@@ -11,7 +11,7 @@ public class ShipTest {
 		fail("Not yet implemented");
 	}
 	
-	//@Test 
+	@Test 
 	public void testType(){	
 		assertEquals("Battleship", "Battleship", new Battleship().getShipType());
 		assertEquals("Cruiser", "Cruiser", new Cruiser().getShipType());
@@ -19,7 +19,7 @@ public class ShipTest {
 		assertEquals("Submarine", "Submarine", new Submarine().getShipType());
 	}
 	
-	//@Test
+	@Test
 	public void testLength(){
 		assertEquals("Battleship", 4, new Battleship().getLength());
 		assertEquals("Cruiser", 3, new Cruiser().getLength());
@@ -27,7 +27,7 @@ public class ShipTest {
 		assertEquals("Submarine", 1, new Submarine().getLength());		
 	}
 	
-	//@Test
+	@Test
 	public void testHorizontal(){
 
 		IShip battleship = new Battleship();
@@ -56,7 +56,7 @@ public class ShipTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void gettersSetters(){
 		
 		for(int row = 0; row < 10; row++){
@@ -96,15 +96,15 @@ public class ShipTest {
 	
 		Ocean ocean = new Ocean();
 		
-//		for(int row = 0; row < ocean.getShipArray().length; row++){			
-//			for(int col = 0; col < ocean.getShipArray()[0].length - 4; col++){
-//				assertEquals("Empty", true, new Battleship().okToPlaceShipAt(row, col, true, ocean));
-//			}			
-//		}
-//		
-//		ocean = new Ocean();
-//		ocean.getShipArray()[0][0] = new Submarine();
-//		assertEquals("Taken", false, new Battleship().okToPlaceShipAt(0, 0, false, ocean));
+		for(int row = 0; row < ocean.getShipArray().length; row++){			
+			for(int col = 0; col < ocean.getShipArray()[0].length - 4; col++){
+				assertEquals("Empty", true, new Battleship().okToPlaceShipAt(row, col, true, ocean));
+			}			
+		}
+		
+		ocean = new Ocean();
+		ocean.getShipArray()[0][0] = new Submarine();
+		assertEquals("Taken", false, new Battleship().okToPlaceShipAt(0, 0, false, ocean));
 		
 		//check above
 		ocean = new Ocean();
@@ -113,14 +113,14 @@ public class ShipTest {
 		ocean.getShipArray()[1][6] = submarine;
 		
 		//ocean.print();
-//		
-//		assertTrue(!new Battleship().okToPlaceShipAt(0, 5, true, ocean));
-//		assertTrue(!new Battleship().okToPlaceShipAt(0, 6, true, ocean));
-//		assertTrue(!new Battleship().okToPlaceShipAt(0, 7, true, ocean));
-//		
-//		assertTrue(!new Battleship().okToPlaceShipAt(2, 5, true, ocean));
-//		assertTrue(!new Battleship().okToPlaceShipAt(2, 6, true, ocean));
-//		assertTrue(!new Battleship().okToPlaceShipAt(2, 7, true, ocean));
+		
+		assertTrue(!new Battleship().okToPlaceShipAt(0, 5, true, ocean));
+		assertTrue(!new Battleship().okToPlaceShipAt(0, 6, true, ocean));
+		assertTrue(!new Battleship().okToPlaceShipAt(0, 7, true, ocean));
+		
+		assertTrue(!new Battleship().okToPlaceShipAt(2, 5, true, ocean));
+		assertTrue(!new Battleship().okToPlaceShipAt(2, 6, true, ocean));
+		assertTrue(!new Battleship().okToPlaceShipAt(2, 7, true, ocean));
 		
 		assertTrue(!new Battleship().okToPlaceShipAt(1, 2, true, ocean));
 
@@ -128,7 +128,7 @@ public class ShipTest {
 		
 	}//okToPlaceShipAt
 	
-	//@Test 
+	@Test 
 	public void placeShipAt(){
 		
 		Ocean ocean; 
@@ -152,7 +152,7 @@ public class ShipTest {
 				
 	}//placeShipAt
 	
-	//@Test
+	@Test
 	public void shootandsinktest() {
 		
 		Ocean ocean = new Ocean();

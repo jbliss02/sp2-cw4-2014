@@ -53,8 +53,13 @@ public class Ocean implements IOcean {
 		
 		shotsFired++; 
 		
+		
+		boolean hasSunk = false;
+		if(ships[row][column].isSunk()){hasSunk = true;}
+		
 		if(ships[row][column].shootAt(row, column)){
 			hitCount++;
+			if(!hasSunk && ships[row][column].isSunk()){shipsSunk++;}
 			return true;
 		}
 		else {
@@ -190,9 +195,7 @@ public class Ocean implements IOcean {
 			
 	}//placeAllShipsRandomly()
 	
-	
 
-	
 	/**
 	 * Populates the array with EmptyOcean objects,
 	 * used at the start of the game to set the ocean to "empty"

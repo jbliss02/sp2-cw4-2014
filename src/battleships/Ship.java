@@ -80,9 +80,7 @@ public class Ship implements IShip {
 	 */
 	@Override
 	public boolean okToPlaceShipAt(int row, int column, boolean horizontal, IOcean ocean) {
-		
-		ocean.print();
-		
+	
 		if(horizontal){
 			
 			for(int i = column; i < column + length; i++){

@@ -12,7 +12,7 @@ public class OceanTest {
 		fail("Not yet implemented");
 	}
 
-	//@Test
+	@Test
 	public void testIsOccupied_allempty(){
 		
 		for(int row = 0; row < 10; row++){
@@ -23,7 +23,7 @@ public class OceanTest {
 
 	}//testIsOccupied_allempty
 
-	//@Test
+	@Test
 	public void placeShipsByRandom(){
 		
 		Ocean ocean = new Ocean();
@@ -39,28 +39,50 @@ public class OceanTest {
 		ocean.print();
 	}//printOcean
 
-	//@Test
+	@Test
 	public void shootAtTest(){
 		
 		Ocean ocean = new Ocean();
 		Battleship battleship = new Battleship();
-		
+		battleship.setHorizontal(true);
 		ocean.getShipArray()[0][0] = battleship;
 		ocean.getShipArray()[0][1] = battleship;
 		ocean.getShipArray()[0][2] = battleship;
 		ocean.getShipArray()[0][3] = battleship;
 		
+		//row 1 cols 4 to 9 should fail
+		for(int i = 4; i < 10; i++){
+			assertTrue(!ocean.shootAt(0, 4));
+		}
+		
 		//row 1 + should fail
 		for(int row = 1; row < 10; row++){
-			for(int col = 0; col < 10; col++){
-				
+			for(int col = 0; col < 10; col++){				
 				assertTrue(!ocean.shootAt(row, col));
 				
 			}
 		}
 
+		//try the hits
+		assertEquals("1", 0, ocean.getShipsSunk());
+		assertTrue(ocean.shootAt(0, 0));
+		assertTrue(!battleship.isSunk());
+		assertEquals("1", 0, ocean.getShipsSunk());
 		
-	}
+		assertTrue(ocean.shootAt(0, 1));
+		assertTrue(!battleship.isSunk());
+		assertEquals("1", 0, ocean.getShipsSunk());
+		
+		assertTrue(ocean.shootAt(0, 2));
+		assertTrue(!battleship.isSunk());
+		assertEquals("1", 0, ocean.getShipsSunk());
+		
+		assertTrue(ocean.shootAt(0, 3));
+		assertTrue(battleship.isSunk());
+		assertEquals("1", 1, ocean.getShipsSunk());
+		
+		
+	}//shootAtTest
 	
 	
 }
