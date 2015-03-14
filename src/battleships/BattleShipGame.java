@@ -69,10 +69,15 @@ public class BattleShipGame {
 			int row = getRow();
 			int col = getColumn();
 			
-			//redraw the screen and show any information required
+			//redraw the screen and show any information required			
+			boolean wasSunk = ocean.getShipArray()[row][col].isSunk(); //whether the ship in this position is sunk, before we shoot
 			
 			if(ocean.shootAt(row, col)){				
 				System.out.println("Hit");
+				
+				if(!wasSunk && ocean.getShipArray()[row][col].isSunk()){
+					System.out.println("You just sunk a " + ocean.getShipArray()[row][col].getShipType());
+				}
 			}
 			else{
 				System.out.println("Miss");
