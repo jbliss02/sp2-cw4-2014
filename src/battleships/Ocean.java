@@ -102,8 +102,21 @@ public class Ocean implements IOcean {
 	 */
 	@Override
 	public boolean isGameOver(){
-		return false;
-	}
+		
+		boolean allSunk = true; //try to disprove
+		
+		for(int i = 0; i < actualShips.length; i++){
+			
+			if(!actualShips[i].isSunk()){
+				allSunk = false;
+				break; //no point continuing
+			}
+			
+		}//for each ship
+		
+		return allSunk;
+		
+	}//isGameOver
 	
 	/* (non-Javadoc)
 	 * @see battleships.IOcean#getShipArray()
@@ -132,8 +145,7 @@ public class Ocean implements IOcean {
 			System.out.print(row);
 			
 			for(int col = 0; col < ships[0].length; col++)
-			{
-				
+			{			
 				if(shotsReceived[row][col]){
 					System.out.print(ships[row][col].toString());
 				}
@@ -141,15 +153,13 @@ public class Ocean implements IOcean {
 					System.out.print(".");
 				}
 
-					
-					
-
-
 			}//col
 			
-			System.out.println();
+			System.out.println(""); 
 			
 		}//row
+		
+		System.out.println(""); //give some space
 		
 	}//print()
 	

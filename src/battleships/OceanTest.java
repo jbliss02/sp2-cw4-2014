@@ -98,7 +98,7 @@ public class OceanTest {
 				
 	}
 	
-	@Test
+	//@Test
 	public void testShotsHitandSunk(){
 		
 		//visual tests	
@@ -133,6 +133,29 @@ public class OceanTest {
 		assertTrue(battleship.isSunk());
 		ocean.print();
 		assertEquals("1", 1, ocean.getShipsSunk());
+		
+	}
+	
+	@Test
+	public void testgameover(){
+		
+		Ocean ocean = new Ocean();
+		ocean.placeAllShipsRandomly();
+		ocean.print();
+		assertTrue(!ocean.isGameOver());
+		
+		//brute force
+		for(int row = 0; row < 10; row++){
+			for(int col = 0; col < 10; col++){
+					
+				ocean.shootAt(row, col);
+				ocean.print();
+
+
+			}
+		}
+		
+
 		
 	}
 	

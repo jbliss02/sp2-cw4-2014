@@ -108,6 +108,9 @@ public class Ship implements IShip {
 	@Override
 	public void placeShipAt(int row, int column, boolean horizontal, IOcean ocean) {
 		
+		this.bowRow = row;
+		this.bowColumn = column;
+		
 		if(horizontal){
 
 			for(int i = column; i < column + length; i++){
@@ -160,27 +163,40 @@ public class Ship implements IShip {
 			
 		if(isSunk()) {return false;} //ship has been sunk so cannot have a successful pop at it
 		
+		int cellCount = 0; //which cell has been hit (to update hits array);
+		
 		if(horizontal){
 			
 			//check each cell the ship is in
-			for(int i = bowColumn; i < bowColumn + length; i++){
+			
+			//get the max column
+			int maxCol = (bowColumn + length) > 9 ? 9 : bowColumn + length;
+			
+			for(int i = bowColumn; i < maxCol; i++){
 				
 				if(i == column && row == bowRow){
-					hit[i] = true; //mark the cell as hit
+					hit[cellCount] = true; //mark the cell as hit
 					return true; //successful hit
 				}
+				
+				cellCount++;
 				
 			}//for each cell			
 		}
 		else { //is vertical
 			
+			//get the max row
+			int maxRow = (bowRow + length) > 9 ? 9 : bowRow + length;
+			
 			//check each cell the ship is in
-			for(int i = bowRow; i < bowRow + length; i++){
+			for(int i = bowRow; i < maxRow; i++){
 				
 				if(i == row && column == bowColumn){
-					hit[i] = true;
+					hit[cellCount] = true;
 					return true;
 				}
+				
+				cellCount++;
 				
 			}//for each cell
 			
