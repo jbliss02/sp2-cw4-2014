@@ -81,7 +81,6 @@ public class Ship implements IShip {
 	 */
 	@Override
 	public boolean okToPlaceShipAt(int row, int column, boolean horizontal, IOcean ocean) {
-
 		
 		if(horizontal){
 			
@@ -176,8 +175,7 @@ public class Ship implements IShip {
 					hit[i - bowColumn] = true; //mark the cell as hit
 					return true; //successful hit
 				}
-				
-				
+							
 			}//for each cell			
 		}
 		else { //is vertical
@@ -192,8 +190,7 @@ public class Ship implements IShip {
 					hit[i - bowRow] = true;
 					return true;
 				}
-				
-				
+						
 			}//for each cell
 			
 		}//which way the ship is facing

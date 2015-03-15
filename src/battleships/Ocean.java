@@ -68,10 +68,6 @@ public class Ocean implements IOcean {
 		}
 		else {
 			
-			if(!ships[row][column].getClass().getSimpleName().equals("EmptySea")){
-				String s = "break";
-			}
-			
 			ships[row][column] = new HitEmptySea(); //mark this bit of the ocean as being hit
 			return false;
 		}
@@ -147,10 +143,11 @@ public class Ocean implements IOcean {
 		
 		for(int row = 0; row < ships.length; row++){
 			
-			System.out.print(row);
+			System.out.print(row); //print the header
 			
 			for(int col = 0; col < ships[0].length; col++)
 			{			
+				//print the cell
 				if(shotsReceived[row][col]){
 					System.out.print(ships[row][col].toString());
 				}
@@ -167,7 +164,6 @@ public class Ocean implements IOcean {
 		System.out.println(""); //give some space
 		
 	}//print()
-	
 	
 	
 	/* (non-Javadoc)
@@ -204,7 +200,8 @@ public class Ocean implements IOcean {
 					//re-set the starting column so the bow is always the left most column
 					startCol = moveRight ? startCol : startCol - ship.getLength() + 1;
 					
-				} else {
+				} 
+				else {
 					
 					//ship is vertical so go up or down
 					boolean moveUp = random.nextBoolean(); 

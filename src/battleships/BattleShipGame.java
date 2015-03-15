@@ -14,14 +14,7 @@ import java.util.Scanner;
 	various Ship classes.
 
  */
-/**
- * @author J
- *
- */
-/**
- * @author J
- *
- */
+
 public class BattleShipGame {
 
 	/**
@@ -33,14 +26,9 @@ public class BattleShipGame {
 
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
-		System.out.print("Welcome to Battleships; the game of highly coupled classes, but the spec has to be followed...\n\n");
-		
-		 new BattleShipGame().startGame();
-		
-
-		
+		System.out.print("Welcome to Battleships\n\n");		
+		 new BattleShipGame().startGame();			
 	}
 
 	/**
@@ -75,6 +63,7 @@ public class BattleShipGame {
 			if(ocean.shootAt(row, col)){				
 				System.out.println("Hit");
 				
+				//check whether this ship has now been sunk
 				if(!wasSunk && ocean.getShipArray()[row][col].isSunk()){
 					System.out.println("You just sunk a " + ocean.getShipArray()[row][col].getShipType());
 				}
